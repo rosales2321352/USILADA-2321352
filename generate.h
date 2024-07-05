@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <future>
+#include <string>
 #include "init.h"
 #include "database.h"
 #include "general.h"

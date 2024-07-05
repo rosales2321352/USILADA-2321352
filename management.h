@@ -43,7 +43,9 @@ namespace management_cpp
   {
     try
     {
+
       Person person;
+
       for (const auto &personList : personsList)
       {
         if (binarySearch(personList, dni, person))
@@ -88,25 +90,27 @@ namespace management_cpp
   {
     try
     {
+
       init::ConfigRead configRead;
       configRead.Open("config.ini");
       int sizeOfBlock = std::stoi(configRead.GetValue("Order", "sizeOfBlock"));
       std::string filename = configRead.GetValue("Database", "filename");
+      bool new_vector = true;
       for (auto &personList : personsList)
       {
         if (personList.size() < sizeOfBlock)
         {
           personList.push_back(person);
-        }
-        else
-        {
-          personsList.push_back({person});
+          new_vector = false;
+          break;
         }
       }
-      for (auto &personList : personsList)
+
+      if (new_vector)
       {
-        database_cpp::Database::writePersons(personList, filename);
+        personsList.push_back({person});
       }
+      database_cpp::Database::writeManyPersons(personsList, filename);
       return true;
     }
     catch (const std::exception &e)

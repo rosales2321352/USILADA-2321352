@@ -24,6 +24,7 @@ namespace database_cpp
     static void writePerson(const Person &person, std::ofstream &outFile);
     static Person readPerson(std::ifstream &inFile);
     static void writePersons(const std::vector<Person> &persons, const std::string &filename);
+    static void writeManyPersons(std::vector<std::vector<Person>> &persons, const std::string &filename);
     static void readPersons(const std::string &filename, std::vector<std::vector<Person>> &personsList, int sizeOfBlock);
   };
 
@@ -101,17 +102,31 @@ namespace database_cpp
     outFile.close();
   }
 
+  void Database::writeManyPersons(std::vector<std::vector<Person>> &personsList, const std::string &filename)
+  {
+    std::ofstream outFile(filename, std::ios::binary);
+    for (const auto &personList : personsList)
+    {
+      for (const auto &person : personList)
+      {
+        writePerson(person, outFile);
+      }
+    }
+    outFile.close();
+  }
+
   void Database::readPersons(const std::string &filename, std::vector<std::vector<Person>> &personsList, int sizeOfBlock)
   {
     std::ifstream inFile(filename, std::ios::binary);
     int count = 0;
+    int total_count = 0;
     std::vector<Person> persons;
     while (inFile.peek() != EOF)
     {
 
       Person person = readPerson(inFile);
       persons.push_back(person);
-      if (persons.size() == sizeOfBlock)
+      if (persons.size() == sizeOfBlock || inFile.peek() == EOF)
       {
         persons = countingSort(persons);
         personsList.push_back(persons);
@@ -119,8 +134,11 @@ namespace database_cpp
         count = 0;
       }
       count++;
+      total_count++;
     }
+
     inFile.close();
+    std::cout << "Total de registros leidos: " << total_count << std::endl;
   }
 
 }
