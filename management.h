@@ -19,6 +19,7 @@ namespace management_cpp
     static void prepareData(std::vector<std::vector<Person>> &personsList);
     static Person findByDNI(std::vector<std::vector<Person>> &personsList, const int &dni);
     static bool deleteByDNI(std::vector<std::vector<Person>> &personsList, const int &dni); // Declaración de la nueva función
+    static bool createNewPerson(std::vector<std::vector<Person>> &personsList, const Person &person);
   };
 
   void Management::prepareData(std::vector<std::vector<Person>> &personsList)
@@ -60,15 +61,14 @@ namespace management_cpp
   }
 
   // Implementación de la función deleteByDNI
-  bool Management::deleteByDNI(std::vector<std::vector<Person>> &personsList, const int &dni) 
+  bool Management::deleteByDNI(std::vector<std::vector<Person>> &personsList, const int &dni)
   {
     try
     {
       for (auto &personList : personsList)
       {
-        auto it = std::find_if(personList.begin(), personList.end(), [dni](const Person &person) {
-          return person.dni == dni;
-        });
+        auto it = std::find_if(personList.begin(), personList.end(), [dni](const Person &person)
+                               { return person.dni == dni; });
 
         if (it != personList.end())
         {
@@ -77,6 +77,37 @@ namespace management_cpp
         }
       }
       return false;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
+  bool Management::createNewPerson(std::vector<std::vector<Person>> &personsList, const Person &person)
+  {
+    try
+    {
+      init::ConfigRead configRead;
+      configRead.Open("config.ini");
+      int sizeOfBlock = std::stoi(configRead.GetValue("Order", "sizeOfBlock"));
+      std::string filename = configRead.GetValue("Database", "filename");
+      for (auto &personList : personsList)
+      {
+        if (personList.size() < sizeOfBlock)
+        {
+          personList.push_back(person);
+        }
+        else
+        {
+          personsList.push_back({person});
+        }
+      }
+      for (auto &personList : personsList)
+      {
+        database_cpp::Database::writePersons(personList, filename);
+      }
+      return true;
     }
     catch (const std::exception &e)
     {
