@@ -67,18 +67,21 @@ namespace management_cpp
   {
     try
     {
+      init::ConfigRead configRead;
+      configRead.Open("config.ini");
+      std::string filename = configRead.GetValue("Database", "filename");
+      Person person;
       for (auto &personList : personsList)
       {
-        auto it = std::find_if(personList.begin(), personList.end(), [dni](const Person &person)
-                               { return person.dni == dni; });
-
-        if (it != personList.end())
+        int index = binaryGetPosition(personList, dni, person);
+        if (index != -1)
         {
-          personList.erase(it);
-          return true;
+          personList.erase(personList.begin() + index);
+          break;
         }
       }
-      return false;
+      database_cpp::Database::writeManyPersons(personsList, filename);
+      return true;
     }
     catch (const std::exception &e)
     {
@@ -86,6 +89,7 @@ namespace management_cpp
       return false;
     }
   }
+
   bool Management::createNewPerson(std::vector<std::vector<Person>> &personsList, const Person &person)
   {
     try

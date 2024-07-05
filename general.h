@@ -139,11 +139,9 @@ bool binarySearch(const std::vector<Person> &persons, int dni, Person &result)
 {
   int left = 0;
   int right = persons.size() - 1;
-  std::cout << persons.size() << std::endl;
   while (left <= right)
   {
     int mid = left + (right - left) / 2;
-    std::cout << persons[mid].dni << " " << dni << std::endl;
     if (persons[mid].dni == dni)
     {
       result = persons[mid];
@@ -160,6 +158,31 @@ bool binarySearch(const std::vector<Person> &persons, int dni, Person &result)
   }
 
   return false;
+}
+
+int binaryGetPosition(const std::vector<Person> &persons, int dni, Person &result)
+{
+  int left = 0;
+  int right = persons.size() - 1;
+  while (left <= right)
+  {
+    int mid = left + (right - left) / 2;
+    if (persons[mid].dni == dni)
+    {
+      result = persons[mid];
+      return mid;
+    }
+    if (persons[mid].dni < dni)
+    {
+      left = mid + 1;
+    }
+    else
+    {
+      right = mid - 1;
+    }
+  }
+
+  return -1;
 }
 
 #endif

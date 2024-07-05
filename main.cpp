@@ -130,16 +130,16 @@ int main()
           std::cin >> dni;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           Person person = management_cpp::Management::findByDNI(personsList, dni);
-          if (person.dni != 0)
+          if (person.dni != 0 && person.name != "")
           {
-            std::cout << "Registro encontrado:" << std::endl;
-            std::cout << "DNI: " << person.dni << std::endl;
-            std::cout << "Nombre: " << person.name << std::endl;
-            std::cout << "Nacionalidad: " << person.nationality << std::endl;
-            std::cout << "Dirección: " << person.address.department << ", " << person.address.province << ", " << person.address.district << ", " << person.address.city << std::endl;
-            std::cout << "Telefono: " << person.phoneNumber << std::endl;
-            std::cout << "Email: " << person.email << std::endl;
-            std::cout << "Estado Civil: " << person.civilStatus << std::endl;
+            std::cout << BLUE << "Registro encontrado:" << RESET << std::endl;
+            std::cout << YELLOW << "DNI: " << RESET << person.dni << std::endl;
+            std::cout << YELLOW << "Nombre: " << RESET << person.name << std::endl;
+            std::cout << YELLOW << "Nacionalidad: " << RESET << person.nationality << std::endl;
+            std::cout << YELLOW << "Dirección: " << RESET << person.address.department << ", " << person.address.province << ", " << person.address.district << ", " << person.address.city << std::endl;
+            std::cout << YELLOW << "Telefono: " << RESET << person.phoneNumber << std::endl;
+            std::cout << YELLOW << "Email: " << RESET << person.email << std::endl;
+            std::cout << YELLOW << "Estado Civil: " << RESET << person.civilStatus << std::endl;
           }
           else
           {
@@ -155,38 +155,38 @@ int main()
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           Person newPerson = Person();
           std::string _dni = "";
-          std::cout << "DNI: ";
+          std::cout << YELLOW << "DNI: " << RESET;
           std::cin >> _dni;
           newPerson.dni = std::stoi(_dni);
           getline(std::cin, newPerson.name);
-          std::cout << "Nombre: ";
+          std::cout << YELLOW << "Nombre: " << RESET;
           std::cin;
           getline(std::cin, newPerson.name);
-          std::cout << "Apellido: ";
+          std::cout << YELLOW << "Apellido: " << RESET;
           std::cin;
           getline(std::cin, newPerson.lastName);
-          std::cout << "Nacionalidad: ";
+          std::cout << YELLOW << "Nacionalidad: " << RESET;
           std::cin;
           getline(std::cin, newPerson.nationality);
-          std::cout << "Departamento: ";
+          std::cout << YELLOW << "Departamento: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.department);
-          std::cout << "Provincia: ";
+          std::cout << YELLOW << "Provincia: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.province);
-          std::cout << "Distrito: ";
+          std::cout << YELLOW << "Distrito: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.district);
-          std::cout << "Ciudad: ";
+          std::cout << YELLOW << "Ciudad: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.city);
-          std::cout << "Telefono: ";
+          std::cout << YELLOW << "Telefono: " << RESET;
           std::cin;
           getline(std::cin, newPerson.phoneNumber);
-          std::cout << "Correo: ";
+          std::cout << YELLOW << "Correo: " << RESET;
           std::cin;
           getline(std::cin, newPerson.email);
-          std::cout << "Estatus Civil [M/S]: ";
+          std::cout << YELLOW << "Estatus Civil [M/S]: " << RESET;
           std::cin;
           getline(std::cin, newPerson.civilStatus);
           if (management_cpp::Management::createNewPerson(personsList, newPerson))
