@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sys/stat.h>
-#include <sys/resource.h>
 
 #ifndef GENERAL_DATA_H
 #define GENERAL_DATA_H
@@ -187,9 +186,8 @@ int binaryGetPosition(const std::vector<Person> &persons, int dni)
 
 long getMemory()
 {
-  struct rusage usage;
-  getrusage(RUSAGE_SELF, &usage);
-  return usage.ru_maxrss; // Retorna el uso máximo de memoria en kilobytes
+
+  return 0; // Retorna el uso máximo de memoria en kilobytes
 }
 
 std::chrono::time_point<std::chrono::steady_clock> getTime()

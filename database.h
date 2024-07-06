@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <chrono>
 #include <string>
 #include <mutex>
 #include <thread>
@@ -120,15 +121,24 @@ namespace database_cpp
     std::ifstream inFile(filename, std::ios::binary);
     int count = 0;
     int total_count = 0;
+    long total_memory = 0;
     std::vector<Person> persons;
+    std::chrono::duration<double> total_time = std::chrono::duration<double>::zero();
     while (inFile.peek() != EOF)
     {
 
       Person person = readPerson(inFile);
+
       persons.push_back(person);
       if (persons.size() == sizeOfBlock || inFile.peek() == EOF)
       {
+        long startMemory = getMemory();
+        std::chrono::time_point<std::chrono::steady_clock> startTime = getTime();
         persons = countingSort(persons);
+        long endMemory = getMemory();
+        std::chrono::time_point<std::chrono::steady_clock> endTime = getTime();
+        total_memory += getMemoryUsage(startMemory, endMemory);
+        total_time += getElapsedTime(startTime, endTime);
         personsList.push_back(persons);
         persons.clear();
         count = 0;
@@ -139,6 +149,8 @@ namespace database_cpp
 
     inFile.close();
     std::cout << "Total de registros leidos: " << total_count << std::endl;
+    std::cout << "Total de memoria usada: " << total_memory << " kb" << std::endl;
+    std::cout << "Tiempo de ejecución: " << total_time.count() << " segundos" << std::endl;
   }
 
 }

@@ -66,13 +66,13 @@ int main()
   std::cout << BLACK << BG_GREEN << "*************** Sistema de Registro Nacional ***************" << RESET << std::endl;
   std::cout << std::endl;
 
-  startMemory = getMemory();
-  startTime = getTime();
+  // startMemory = getMemory();
+  // startTime = getTime();
   std::cout << "Proceso iniciado" << std::endl;
   management_cpp::Management::prepareData(personsList);
-  endMemory = getMemory();
-  endTime = getTime();
-  calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
+  // endMemory = getMemory();
+  // endTime = getTime();
+  // calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
   customPause();
   while (true)
   {
@@ -436,14 +436,14 @@ int main()
 
     else
     {
+      std::cout << GREEN << "========================================================" << RESET << std::endl;
       std::cout << GREEN << "Gracias por usar el sistema" << RESET << std::endl;
-      std::cout << std::endl;
+      std::cout << GREEN << "========================================================" << RESET << std::endl;
       break;
     }
-
-    personsList.clear();
-    personsList.shrink_to_fit();
   }
+  personsList.clear();
+  personsList.shrink_to_fit();
 
   return 0;
 }
