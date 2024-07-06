@@ -1,12 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
-#if defined(_WIN32) || defined(_WIN64)
-#include <conio>
-#elif __linux__
-#include <unistd.h>
-#include <termios.h>
-#endif
+
 #include "general.h"
 #include "management.h"
 #include "colors.h"
@@ -17,47 +12,7 @@ long endMemory;
 std::chrono::time_point<std::chrono::steady_clock> startTime;
 std::chrono::time_point<std::chrono::steady_clock> endTime;
 // vector<Person> persons;
-void clearConsole()
-{
-  try
-  {
 
-#ifdef _WIN32
-    std::system("cls");
-#elif __linux__
-    std::system("clear");
-#endif
-  }
-  catch (const std::exception &e)
-  {
-  }
-}
-
-void customPause()
-{
-  std::cout << GREEN << "========================================================" << RESET << std::endl;
-  std::cout << "Presiona cualquier tecla para continuar..." << std::endl;
-  std::cout << GREEN << "========================================================" << RESET << std::endl;
-#if defined(_WIN32) || defined(_WIN64)
-  std::cout << "Presiona cualquier tecla para continuar...";
-  _getch();
-#else
-
-  // Configurar el terminal para desactivar el eco y la espera por Enter
-  termios oldt, newt;
-  tcgetattr(STDIN_FILENO, &oldt); // Obtener la configuración actual del terminal
-  newt = oldt;
-  newt.c_lflag &= ~(ICANON | ECHO);        // Desactivar la entrada canónica y el eco
-  tcsetattr(STDIN_FILENO, TCSANOW, &newt); // Aplicar la nueva configuración
-
-  // Leer una tecla
-  char ch;
-  read(STDIN_FILENO, &ch, 1);
-
-  // Restaurar la configuración del terminal
-  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-#endif
-}
 int main()
 {
   std::vector<std::vector<Person>> personsList;
@@ -73,10 +28,10 @@ int main()
   endMemory = getMemory();
   endTime = getTime();
   calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
-  customPause();
+
   while (true)
   {
-    clearConsole();
+
     std::cout << GREEN << "========================================================" << RESET << std::endl;
     std::cout << GREEN << "Seleccione la opcion deseada" << RESET << std::endl;
     std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -90,7 +45,7 @@ int main()
     std::cout << GREEN << "========================================================" << RESET << std::endl;
     if (option == 1)
     {
-      clearConsole();
+
       std::cout << GREEN << "========================================================" << RESET << std::endl;
       std::cout << GREEN << "Ingrese la cantidad de registros a generar" << RESET << std::endl;
       std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -109,14 +64,12 @@ int main()
       endMemory = getMemory();
       endTime = getTime();
       calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
-
-      customPause();
     }
     else if (option == 2)
     {
       while (true)
       {
-        clearConsole();
+
         std::cout << GREEN << "========================================================" << RESET << std::endl;
         std::cout << GREEN << "Seleccione una operacion" << RESET << std::endl;
         std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -133,7 +86,7 @@ int main()
         std::cout << GREEN << "========================================================" << RESET << std::endl;
         if (option == 1)
         {
-          clearConsole();
+
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           std::cout << GREEN << "Ingrese el DNI" << RESET << std::endl;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -165,11 +118,10 @@ int main()
           {
             std::cout << "Registro no encontrado." << std::endl;
           }
-          customPause();
         }
         else if (option == 2)
         {
-          clearConsole();
+
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           std::cout << GREEN << "Ingrese los datos de la persona" << RESET << std::endl;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -229,11 +181,10 @@ int main()
           endTime = getTime();
           calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
           std::cout << GREEN << "========================================================" << RESET << std::endl;
-          customPause();
         }
         else if (option == 3)
         {
-          clearConsole();
+
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           std::cout << GREEN << "Ingrese el DNI" << RESET << std::endl;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -247,7 +198,7 @@ int main()
           {
             while (true)
             {
-              clearConsole();
+
               std::cout << GREEN << "========================================================" << RESET << std::endl;
               std::cout << GREEN << "Datos actuales" << RESET << std::endl;
               std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -295,7 +246,7 @@ int main()
               {
                 while (true)
                 {
-                  clearConsole();
+
                   std::cout << GREEN << "========================================================" << RESET << std::endl;
                   std::cout << GREEN << "Datos actuales" << RESET << std::endl;
                   std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -398,11 +349,10 @@ int main()
           {
             std::cout << "Registro no encontrado." << std::endl;
           }
-          customPause();
         }
         else if (option == 4)
         {
-          clearConsole();
+
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           std::cout << GREEN << "Ingrese el DNI" << RESET << std::endl;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
@@ -425,7 +375,6 @@ int main()
             std::cout << "Registro no encontrado." << std::endl;
           }
           std::cout << GREEN << "========================================================" << RESET << std::endl;
-          customPause();
         }
         else
         {
