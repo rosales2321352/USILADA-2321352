@@ -12,6 +12,10 @@
 #include "colors.h"
 #include "generate.h"
 
+long startMemory;
+long endMemory;
+std::chrono::time_point<std::chrono::steady_clock> startTime;
+std::chrono::time_point<std::chrono::steady_clock> endTime;
 // vector<Person> persons;
 void clearConsole()
 {
@@ -62,12 +66,14 @@ int main()
   std::cout << BLACK << BG_GREEN << "*************** Sistema de Registro Nacional ***************" << RESET << std::endl;
   std::cout << std::endl;
 
-  auto start = std::chrono::high_resolution_clock::now();
+  startMemory = getMemory();
+  startTime = getTime();
   std::cout << "Proceso iniciado" << std::endl;
   management_cpp::Management::prepareData(personsList);
-  auto end = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = end - start;
-  std::cout << "Preparado en " << elapsed.count() << " seconds. " << std::endl;
+  endMemory = getMemory();
+  endTime = getTime();
+  calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
+  customPause();
   while (true)
   {
     clearConsole();
@@ -95,14 +101,15 @@ int main()
 
       std::cout << GREEN << "========================================================" << RESET << std::endl;
       std::cout << "Generando..." << std::endl;
-      start = std::chrono::high_resolution_clock::now();
-      std::cout << "Proceso iniciado" << std::endl;
+
+      startMemory = getMemory();
+      startTime = getTime();
       generate_data::Generate::start(totalRecords);
-      std::cout << "Proceso preparando los datos" << std::endl;
       management_cpp::Management::prepareData(personsList);
-      end = std::chrono::high_resolution_clock::now();
-      std::chrono::duration<double> elapsed = end - start;
-      std::cout << "Preparado en " << elapsed.count() << " seconds." << std::endl;
+      endMemory = getMemory();
+      endTime = getTime();
+      calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
+
       customPause();
     }
     else if (option == 2)
@@ -136,7 +143,13 @@ int main()
           std::cin.clear();
 
           std::cout << GREEN << "========================================================" << RESET << std::endl;
+          startMemory = getMemory();
+          startTime = getTime();
           Person person = management_cpp::Management::findByDNI(personsList, dni);
+          endMemory = getMemory();
+          endTime = getTime();
+          calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
           if (person.dni != 0 && person.name != "")
           {
             std::cout << BLUE << "Registro encontrado:" << RESET << std::endl;
@@ -207,9 +220,15 @@ int main()
           std::cin;
           getline(std::cin, newPerson.civilStatus);
           std::cin.clear();
-
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
+          startMemory = getMemory();
+          startTime = getTime();
           if (management_cpp::Management::createNewPerson(personsList, newPerson))
             std::cout << "Se ha creado el registro" << std::endl;
+          endMemory = getMemory();
+          endTime = getTime();
+          calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
           customPause();
         }
         else if (option == 3)
@@ -359,8 +378,14 @@ int main()
               }
               else if (option == 7)
               {
+                startMemory = getMemory();
+                startTime = getTime();
                 management_cpp::Management::updateByDNI(personsList, person);
+                endMemory = getMemory();
+                endTime = getTime();
+                calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
                 std::cout << "Registro actualizado exitosamente." << std::endl;
+                std::cout << GREEN << "========================================================" << RESET << std::endl;
                 break;
               }
               else if (option == 8)
@@ -385,7 +410,12 @@ int main()
           std::cout << "DNI: ";
           std::cin >> dni;
           std::cout << GREEN << "========================================================" << RESET << std::endl;
+          startMemory = getMemory();
+          startTime = getTime();
           bool success = management_cpp::Management::deleteByDNI(personsList, dni);
+          endMemory = getMemory();
+          endTime = getTime();
+          calculateMemoryAndTime(startMemory, endMemory, startTime, endTime);
           if (success)
           {
             std::cout << "Registro eliminado exitosamente." << std::endl;
@@ -394,6 +424,7 @@ int main()
           {
             std::cout << "Registro no encontrado." << std::endl;
           }
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
           customPause();
         }
         else

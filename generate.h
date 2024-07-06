@@ -140,29 +140,6 @@ namespace generate_data
         }
       }
       outfile_.close();
-
-      // for (int i = 0; i < totalRecords; i += blockSize * numThreads)
-      // {
-      //   for (int j = 0; j < numThreads; ++j)
-      //   {
-      //     int start = i + j * blockSize;
-      //     int end = std::min(start + blockSize, totalRecords);
-      //     if (start < totalRecords)
-      //     {
-      //       futures.push_back(async(std::launch::async, writeBlock, filename, start, end));
-      //     }
-      //   }
-      //   if (i % 1000000 == 0)
-      //   {
-      //     std::cout << "Progreso: " << (i / 1000000) << " millones de registros generados.\n";
-      //   }
-      //   // Espera a que todos los hilos terminen antes de continuar
-      //   for (auto &f : futures)
-      //   {
-      //     f.get();
-      //   }
-      //   futures.clear();
-      // }
     }
     catch (const std::exception &e)
     {

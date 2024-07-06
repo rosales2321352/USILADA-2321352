@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sys/stat.h>
+#include <sys/resource.h>
 
 #ifndef GENERAL_DATA_H
 #define GENERAL_DATA_H
@@ -184,4 +185,33 @@ int binaryGetPosition(const std::vector<Person> &persons, int dni)
   return -1;
 }
 
+long getMemory()
+{
+  struct rusage usage;
+  getrusage(RUSAGE_SELF, &usage);
+  return usage.ru_maxrss; // Retorna el uso máximo de memoria en kilobytes
+}
+
+std::chrono::time_point<std::chrono::steady_clock> getTime()
+{
+  return std::chrono::steady_clock::now();
+}
+
+std::chrono::duration<double> getElapsedTime(const std::chrono::time_point<std::chrono::steady_clock> &start, const std::chrono::time_point<std::chrono::steady_clock> &end)
+{
+  return std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+}
+
+long getMemoryUsage(long startMemory, long endMemory)
+{
+  return endMemory - startMemory;
+}
+
+void calculateMemoryAndTime(long startMemory, long endMemory, std::chrono::time_point<std::chrono::steady_clock> start, std::chrono::time_point<std::chrono::steady_clock> end)
+{
+  std::chrono::duration<double> elapsed = end - start;
+  long menory = (endMemory - startMemory);
+  std::cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << std::endl;
+  std::cout << "Uso de memoria: " << menory << " kb" << std::endl;
+}
 #endif
