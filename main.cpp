@@ -91,6 +91,8 @@ int main()
       std::cout << "Cantidad: ";
       int totalRecords;
       std::cin >> totalRecords;
+      std::cin.clear();
+
       std::cout << GREEN << "========================================================" << RESET << std::endl;
       std::cout << "Generando..." << std::endl;
       start = std::chrono::high_resolution_clock::now();
@@ -113,11 +115,14 @@ int main()
         std::cout << GREEN << "========================================================" << RESET << std::endl;
         std::cout << YELLOW << "[1] Buscar por DNI" << RESET << std::endl;
         std::cout << YELLOW << "[2] Crear nuevo registro" << RESET << std::endl;
-        std::cout << YELLOW << "[3] Eliminar registro" << RESET << std::endl; // Nueva opción añadida
-        std::cout << RED << "[4] Salir" << RESET << std::endl;
+        std::cout << YELLOW << "[3] Modificar registro" << RESET << std::endl;
+        std::cout << YELLOW << "[4] Eliminar registro" << RESET << std::endl; // Nueva opción añadida
+        std::cout << RED << "[5] Salir" << RESET << std::endl;
         std::cout << GREEN << "========================================================" << RESET << std::endl;
         std::cout << "Opcion: ";
         std::cin >> option;
+        std::cin.clear();
+
         std::cout << GREEN << "========================================================" << RESET << std::endl;
         if (option == 1)
         {
@@ -128,6 +133,8 @@ int main()
           int dni;
           std::cout << "DNI: ";
           std::cin >> dni;
+          std::cin.clear();
+
           std::cout << GREEN << "========================================================" << RESET << std::endl;
           Person person = management_cpp::Management::findByDNI(personsList, dni);
           if (person.dni != 0 && person.name != "")
@@ -159,41 +166,216 @@ int main()
           std::cin >> _dni;
           newPerson.dni = std::stoi(_dni);
           getline(std::cin, newPerson.name);
+          std::cin.clear();
           std::cout << YELLOW << "Nombre: " << RESET;
           std::cin;
           getline(std::cin, newPerson.name);
+          std::cin.clear();
           std::cout << YELLOW << "Apellido: " << RESET;
           std::cin;
           getline(std::cin, newPerson.lastName);
+          std::cin.clear();
           std::cout << YELLOW << "Nacionalidad: " << RESET;
           std::cin;
           getline(std::cin, newPerson.nationality);
+          std::cin.clear();
           std::cout << YELLOW << "Departamento: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.department);
+          std::cin.clear();
           std::cout << YELLOW << "Provincia: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.province);
+          std::cin.clear();
           std::cout << YELLOW << "Distrito: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.district);
+          std::cin.clear();
           std::cout << YELLOW << "Ciudad: " << RESET;
           std::cin;
           getline(std::cin, newPerson.address.city);
+          std::cin.clear();
           std::cout << YELLOW << "Telefono: " << RESET;
           std::cin;
           getline(std::cin, newPerson.phoneNumber);
+          std::cin.clear();
           std::cout << YELLOW << "Correo: " << RESET;
           std::cin;
           getline(std::cin, newPerson.email);
+          std::cin.clear();
           std::cout << YELLOW << "Estatus Civil [M/S]: " << RESET;
           std::cin;
           getline(std::cin, newPerson.civilStatus);
+          std::cin.clear();
+
           if (management_cpp::Management::createNewPerson(personsList, newPerson))
             std::cout << "Se ha creado el registro" << std::endl;
           customPause();
         }
         else if (option == 3)
+        {
+          clearConsole();
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
+          std::cout << GREEN << "Ingrese el DNI" << RESET << std::endl;
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
+          int dni;
+          std::cout << "DNI: ";
+          std::cin >> dni;
+          std::cin.clear();
+          std::cout << GREEN << "========================================================" << RESET << std::endl;
+          Person person = management_cpp::Management::findByDNI(personsList, dni);
+          if (person.dni != 0 && person.name != "")
+          {
+            while (true)
+            {
+              clearConsole();
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              std::cout << GREEN << "Datos actuales" << RESET << std::endl;
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              std::cout << YELLOW << "DNI: " << RESET << person.dni << std::endl;
+              std::cout << YELLOW << "Nombre: " << RESET << person.name << std::endl;
+              std::cout << YELLOW << "Nacionalidad: " << RESET << person.nationality << std::endl;
+              std::cout << YELLOW << "Dirección: " << RESET << person.address.department << ", " << person.address.province << ", " << person.address.district << ", " << person.address.city << std::endl;
+              std::cout << YELLOW << "Telefono: " << RESET << person.phoneNumber << std::endl;
+              std::cout << YELLOW << "Email: " << RESET << person.email << std::endl;
+              std::cout << YELLOW << "Estado Civil: " << RESET << person.civilStatus << std::endl;
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              std::cout << GREEN << "Seleccione una operacion" << RESET << std::endl;
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              std::cout << YELLOW << "[1] Cambiar Nombre" << RESET << std::endl;
+              std::cout << YELLOW << "[2] Cambiar Nacionalidad" << RESET << std::endl;
+              std::cout << YELLOW << "[3] Cambiar Direccion" << RESET << std::endl;
+              std::cout << YELLOW << "[4] Cambiar Telefono" << RESET << std::endl;
+              std::cout << YELLOW << "[5] Cambiar Correo" << RESET << std::endl;
+              std::cout << YELLOW << "[6] Cambiar Estado Civil" << RESET << std::endl;
+              std::cout << BLUE << "[7] Guardar todos los cambios" << RESET << std::endl;
+              std::cout << RED << "[8] Salir" << RESET << std::endl;
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              int option;
+              std::cout << "Opcion: ";
+              std::cin >> option;
+              std::cin.clear();
+              std::cout << GREEN << "========================================================" << RESET << std::endl;
+              if (option == 1)
+              {
+                std::string newName;
+                std::cout << "Nuevo Nombre: ";
+                std::cin >> newName;
+                person.name = newName;
+                std::cin.clear();
+              }
+              else if (option == 2)
+              {
+                std::string newNationality;
+                std::cout << "Nueva Nacionalidad: ";
+                std::cin >> newNationality;
+                person.nationality = newNationality;
+                std::cin.clear();
+              }
+              else if (option == 3)
+              {
+                while (true)
+                {
+                  clearConsole();
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  std::cout << GREEN << "Datos actuales" << RESET << std::endl;
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  std::cout << YELLOW << "Departamento: " << RESET << person.address.department << std::endl;
+                  std::cout << YELLOW << "Provincia: " << RESET << person.address.province << std::endl;
+                  std::cout << YELLOW << "Ciudad: " << RESET << person.address.city << std::endl;
+                  std::cout << YELLOW << "Distrito: " << RESET << person.address.district << std::endl;
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  std::cout << GREEN << "Seleccione una operacion" << RESET << std::endl;
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  std::cout << YELLOW << "[1] Cambiar Departamento" << RESET << std::endl;
+                  std::cout << YELLOW << "[2] Cambiar Provincia" << RESET << std::endl;
+                  std::cout << YELLOW << "[3] Cambiar Ciudad" << RESET << std::endl;
+                  std::cout << YELLOW << "[4] Cambiar Distrito" << RESET << std::endl;
+                  std::cout << RED << "[5] Salir" << RESET << std::endl;
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  int option;
+                  std::cout << "Opcion: ";
+                  std::cin >> option;
+                  std::cin.clear();
+                  std::cout << GREEN << "========================================================" << RESET << std::endl;
+                  std::string t;
+                  getline(std::cin, t);
+                  if (option == 1)
+                  {
+                    std::cout << "Nuevo Departamento: ";
+                    std::cin;
+                    getline(std::cin, person.address.department);
+                  }
+                  else if (option == 2)
+                  {
+                    std::cout << "Nueva Provincia: ";
+                    std::cin;
+                    getline(std::cin, person.address.province);
+                    std::cin.clear();
+                  }
+                  else if (option == 3)
+                  {
+                    std::cout << "Nueva Ciudad: ";
+                    std::cin;
+                    getline(std::cin, person.address.city);
+                    std::cin.clear();
+                  }
+                  else if (option == 4)
+                  {
+                    std::cout << "Nuevo Distrito: ";
+                    std::cin;
+                    getline(std::cin, person.address.district);
+                    std::cin.clear();
+                  }
+                  else if (option == 5)
+                  {
+                    break;
+                  }
+                }
+              }
+              else if (option == 4)
+              {
+                std::string newPhoneNumber;
+                std::cout << "Nuevo Telefono: ";
+                std::cin >> newPhoneNumber;
+                person.phoneNumber = newPhoneNumber;
+                std::cin.clear();
+              }
+              else if (option == 5)
+              {
+                std::string newEmail;
+                std::cout << "Nuevo Correo: ";
+                std::cin >> newEmail;
+                person.email = newEmail;
+                std::cin.clear();
+              }
+              else if (option == 6)
+              {
+                std::string newCivilStatus;
+                std::cout << "Nuevo Estado Civil [M: Married, S: Single]:";
+                std::cin >> newCivilStatus;
+                person.civilStatus = newCivilStatus;
+                std::cin.clear();
+              }
+              else if (option == 7)
+              {
+                management_cpp::Management::updateByDNI(personsList, person);
+                std::cout << "Registro actualizado exitosamente." << std::endl;
+                break;
+              }
+              else if (option == 8)
+              {
+                break;
+              }
+            }
+          }
+          else
+          {
+            std::cout << "Registro no encontrado." << std::endl;
+          }
+          customPause();
+        }
+        else if (option == 4)
         {
           clearConsole();
           std::cout << GREEN << "========================================================" << RESET << std::endl;

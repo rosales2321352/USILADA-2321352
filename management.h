@@ -20,6 +20,7 @@ namespace management_cpp
     static Person findByDNI(std::vector<std::vector<Person>> &personsList, const int &dni);
     static bool deleteByDNI(std::vector<std::vector<Person>> &personsList, const int &dni); // Declaración de la nueva función
     static bool createNewPerson(std::vector<std::vector<Person>> &personsList, const Person &person);
+    static bool updateByDNI(std::vector<std::vector<Person>> &personsList, Person person);
   };
 
   void Management::prepareData(std::vector<std::vector<Person>> &personsList)
@@ -70,10 +71,9 @@ namespace management_cpp
       init::ConfigRead configRead;
       configRead.Open("config.ini");
       std::string filename = configRead.GetValue("Database", "filename");
-      Person person;
       for (auto &personList : personsList)
       {
-        int index = binaryGetPosition(personList, dni, person);
+        int index = binaryGetPosition(personList, dni);
         if (index != -1)
         {
           personList.erase(personList.begin() + index);
@@ -89,7 +89,31 @@ namespace management_cpp
       return false;
     }
   }
-
+  bool Management::updateByDNI(std::vector<std::vector<Person>> &personsList, Person person)
+  {
+    try
+    {
+      init::ConfigRead configRead;
+      configRead.Open("config.ini");
+      std::string filename = configRead.GetValue("Database", "filename");
+      for (auto &personList : personsList)
+      {
+        int index = binaryGetPosition(personList, person.dni);
+        if (index != -1)
+        {
+          personList[index] = person;
+          break;
+        }
+      }
+      database_cpp::Database::writeManyPersons(personsList, filename);
+      return true;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return false;
+    }
+  }
   bool Management::createNewPerson(std::vector<std::vector<Person>> &personsList, const Person &person)
   {
     try
